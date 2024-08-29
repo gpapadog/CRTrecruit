@@ -1,0 +1,18 @@
+Package: CRTrecruit
+Type: Package
+Title: Adjusting for recruitment bias in cluster randomized trials
+Version: 0.0.0.9000
+Date: 2024-08-29
+Author: Georgia Papadogeorgou
+Maintainer: Georgia Papadogeorgou <gpapadogeorgou@gmail.com>
+Description: FILL
+License: GPL (>= 2)
+LazyData: TRUE
+URL: https://github.com/gpapadog/CRTrecruit
+BugReports: https://github.com/gpapadog/CRTrecruit/issues
+RoxygenNote: 7.3.2
+Suggests: 
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    data.table
