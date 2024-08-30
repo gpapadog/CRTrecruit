@@ -6,7 +6,8 @@ Date: 2024-08-29
 Author: Georgia Papadogeorgou
 Maintainer: Georgia Papadogeorgou <gpapadogeorgou@gmail.com>
 Description: FILL
-License: GPL (>= 2)
+License: `use_mit_license()`
+Encoding: UTF-8
 LazyData: TRUE
 URL: https://github.com/gpapadog/CRTrecruit
 BugReports: https://github.com/gpapadog/CRTrecruit/issues
