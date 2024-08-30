@@ -129,11 +129,11 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
                                     ((1 - boot_p_trt) / boot_p_trt))
       prop_incen_boot[bb] <- boot_est_prop_incen
       
-      est_boot[bb, 4] <- ComplierEffect(prop_incen = boot_est_prop_incen,
+      est_boot[bb, 4] <- IncentivizedEffect(prop_incen = boot_est_prop_incen,
                                         effect_estimates = est_boot[bb, 1 : 2])
       
       if (!is.null(prop_incen)) {
-        est_boot[bb, 5] <- ComplierEffect(prop_incen = prop_incen,
+        est_boot[bb, 5] <- IncentivizedEffect(prop_incen = prop_incen,
                                           effect_estimates = est_boot[bb, 1 : 2])
       }
     }

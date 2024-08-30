@@ -16,7 +16,8 @@
 #'    
 #' @export
 #' 
-ComplierEffect <- function(prop_incen, effect_estimates, asym_var_est = NULL) {
+IncentivizedEffect <- function(prop_incen, effect_estimates,
+                               asym_var_est = NULL) {
   
   r <- c(estimate = NA, asym_sd = NA, asym_lb = NA, asym_ub = NA)
   

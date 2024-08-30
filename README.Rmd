@@ -147,10 +147,10 @@ pi_trt <- treat_prop  # The theoretical treatment proportion
 est_prop_incen <- 1 - (pi_trt / (1 - pi_trt)) * ((1 - p_trt) / p_trt)
 ```
 
-- Then, we can use the ```ComplierEffect``` function to acquire the causal effect on the incentivized-recruited group.
+- Then, we can use the ```IncentivizedEffect``` function to acquire the causal effect on the incentivized-recruited group.
 
 ```{r}
-incen <- ComplierEffect(prop_incen = est_prop_incen,
+incen <- IncentivizedEffect(prop_incen = est_prop_incen,
                         effect_estimates = simult_est$estimate[1:2],
                         asym_var_est = simult_est$asym_var_est[1 : 2, 1 : 2])
 incen
