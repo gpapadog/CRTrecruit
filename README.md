@@ -2,8 +2,6 @@ CRTrecruit
 ================
 Georgia Papadogeorgou
 
-# CRTrecruit
-
 ### Inverse weighting methods to adjust for recruitment bias in cluster randomized trials
 
 This R package performs correction for recruitment bias in cluster
@@ -263,12 +261,12 @@ boot_sd
 ```
 
     ##   always+defiers always+compliers        recruited        compliers 
-    ##       0.05666940       0.07700122       0.06654876       0.09257455
+    ##       0.05795236       0.04016683       0.04140680       0.04942062
 
 ``` r
 rbind(lb = effects - 1.96 * boot_sd, ub = effects + 1.96 * boot_sd)
 ```
 
     ##     alw+def  alw+com     recr compliers
-    ## lb 2.631517 2.718517 2.694780  2.843586
-    ## ub 2.853661 3.020362 2.955651  3.206478
+    ## lb 2.629002 2.790713 2.744058  2.928168
+    ## ub 2.856175 2.948167 2.906373  3.121897
