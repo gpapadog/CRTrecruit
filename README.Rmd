@@ -8,7 +8,26 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# CRTrecruit
+
+### Inverse weighting methods to adjust for recruitment bias in cluster randomized trials
+
 This R package performs correction for recruitment bias in cluster randomized trials where available data are on the recruited units only.
+
+The corresponding paper can be found here: https://arxiv.org/pdf/2309.07365 
+
+
+## Installing CRTrecruit
+
+Installing and using CRTrecruit in Rstudio is straightforward. You will first need the devtools R package.
+
+```
+install.packages('devtools')
+library(devtools)
+devtools::install_github("gpapadog/CRTrecruit")
+```
+
+
 
 ### Why use it:
 
