@@ -234,12 +234,17 @@ compl
   compliers.
 
 ``` r
-boots <- BootVar(B = 10, Xobs = Xobs, Zobs = Zobs, Yobs = Yobs, IDobs = IDobs,
+boots <- BootVar(B = 500, Xobs = Xobs, Zobs = Zobs, Yobs = Yobs, IDobs = IDobs,
                  treat_prop = treat_prop, fix_trt_num = TRUE,
                  prop_compl = est_prop_compl, defiers = FALSE, verbose = TRUE)
 ```
 
     ## [1] "For estimated propensity score only."
+    ## [1] 100
+    ## [1] 200
+    ## [1] 300
+    ## [1] 400
+    ## [1] 500
 
 - We create confidence intervals using the standard deviation of the
   bootstrap samples and using the normal approximation.
@@ -261,12 +266,12 @@ boot_sd
 ```
 
     ##   always+defiers always+compliers        recruited        compliers 
-    ##       0.05795236       0.04016683       0.04140680       0.04942062
+    ##       0.07652908       0.06282128       0.06078533       0.07754785
 
 ``` r
 rbind(lb = effects - 1.96 * boot_sd, ub = effects + 1.96 * boot_sd)
 ```
 
     ##     alw+def  alw+com     recr compliers
-    ## lb 2.629002 2.790713 2.744058  2.928168
-    ## ub 2.856175 2.948167 2.906373  3.121897
+    ## lb 2.592592 2.746310 2.706076  2.873039
+    ## ub 2.892586 2.992569 2.944355  3.177026
