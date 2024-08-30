@@ -10,16 +10,16 @@
 #' @param IDobs Vector of integers with the index of the cluster to which the
 #' recruited individuals belong. IDobs should include integers from 1 up to
 #' the number of different clusters.
-#' @param r Numeric. Corresponds to the ratio of the treatment probability over
-#' 1 - treatment probability, where treatment probability is the probability
-#' used to assign the cluster-level treatment.
+#' @param treat_prop Numeric. Proportion of clusters that are treated.
 #' @param inference Logical. Whether the function should calculate the estimate
 #' of the asymptotic variance for the working propensity score parameters.
 #' Defaults to TRUE.
 #' 
 #' @export
 
-EstWPSpars <- function(Xobs, Zobs, IDobs, r, inference = TRUE) {
+EstWPSpars <- function(Xobs, Zobs, IDobs, treat_prop, inference = TRUE) {
+  
+  r <- treat_prop / (1 - treat_prop)
   
   # Number of clusters:
   J <- length(unique(IDobs))
