@@ -23,7 +23,7 @@ SimultEstimateCRT(
 
 \item{weights}{Matrix of weights for each individual used for estimation.
 Columns correspond to weights for the always-recruited, for the always+
-compliers, and for the recruited.}
+incentivized-recruited, and for the recruited.}
 
 \item{IDobs}{Vector of the cluster indices for the recruited individuals.}
 
@@ -42,9 +42,10 @@ performed. Defaults to TRUE.}
 }
 \description{
 Estimating the causal effect on the subpopulation of the always-recruited
-and defiers, the always- and the complier-recruited, and the recruited.
+and disincentivized, the always- and the incentivized-recruited, and the
+recruited.
 }
 \details{
 Builds on the NewEstimateCRT function that does estimation and inference for
-always+defiers and recruited only.
+always+disincentivized and recruited only.
 }

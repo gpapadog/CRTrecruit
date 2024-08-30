@@ -12,8 +12,8 @@ BootVar(
   IDobs,
   treat_prop,
   fix_trt_num = TRUE,
-  prop_compl = NULL,
-  defiers = FALSE,
+  prop_incen = NULL,
+  disincentivized = FALSE,
   verbose = TRUE
 )
 }
@@ -37,16 +37,17 @@ IDobs should include integers from 1 up to the number of different clusters.}
 clusters fixed in the bootstrap samples. This should agree with the
 treatment assignment mechanism. Defaults to TRUE.}
 
-\item{prop_compl}{The proportion of compliers. Bootstrap can be performed
-without re-estimating the proportion of compliers within each bootstrap
-sample. Then, set prop_compl to the estimated value. Defaults to NULL. If
-left NULL, this will not be calculated. We suggest re-estimating the
-proportion of compliers based on the bootstrap sample (leaving this to
-NULL). In simulations, we have found similar inferential performance whether
-this is re-estimated or not.}
+\item{prop_incen}{The proportion of incentivized-recruited. Bootstrap can be
+performed without re-estimating the proportion of incentivized-recruited
+within each bootstrap sample. Then, set prop_incen to the estimated value.
+Defaults to NULL. If left NULL, this will not be calculated. We suggest
+re-estimating the proportion of incentivized-recruited. based on the
+bootstrap sample (leaving this to NULL). In simulations, we have found
+similar inferential performance whether this is re-estimated or not.}
 
-\item{defiers}{Logical. Whether we allow for defiers to exist. If defiers
-exist, we do not estimate effects on the compliers. Defaults to FALSE.}
+\item{disincentivized}{Logical. Whether we allow for disincentivized-
+recruited to exist. If they exist, we do not estimate effects on the
+incentivized-recruited. Defaults to FALSE.}
 
 \item{verbose}{Logical. Whether to print bootstrap progression. Defaults to
 TRUE.}
