@@ -15,4 +15,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports: 
-    data.table
+    data.table,
+    numDeriv
