@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Georgia Papadogeorgou" />
+
+<meta name="date" content="2024-08-30" />
+
+<title>CRTrecruit</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">CRTrecruit</h1>
+<h4 class="author">Georgia Papadogeorgou</h4>
+<h4 class="date">2024-08-30</h4>
+
+
+
+<p>This R package performs correction for recruitment bias in cluster
+randomized trials where available data are on the recruited units
+only.</p>
+<div id="why-use-it" class="section level3">
+<h3>Why use it:</h3>
+<ul>
+<li>Clusters are randomly assigned to treatment or controls. Once
+cluster-level assignment is perfromed, individuals are recruited in the
+study.</li>
+<li>Recruitment is generally not blinded to the treatment level of the
+cluster. This creates post-treatment differences in the treated and
+control recruited populations. These differences render simple contrasts
+of outcomes in treated and control recruited groups not causally
+interpretable.</li>
+</ul>
+</div>
+<div id="what-are-the-situations-that-crtrecruit-should-be-used" class="section level3">
+<h3>What are the situations that CRTrecruit should be used?</h3>
+<ul>
+<li>In cases with post-treatment recruitment differences, CRTrecruit can
+be used to estimate causal effects on interpretable subpopulations.</li>
+<li>These subpopulations correspond to the combination of always- and
+defier-recruited, the always- and complier-recruited, and the recruited
+population. When defiers do not exist, such as in the case where
+treatment can be thought to only lead to increase in the recruitment
+indicator, the always- and defier-recruited population is the same as
+the always-recruited population, and we can further estimate effects on
+the complier-recruited population.</li>
+<li>Our approach relies on assumptions on recruitment ignorability and
+positivity.</li>
+</ul>
+</div>
+<div id="using-crtrecruit" class="section level1">
+<h1>Using CRTrecruit</h1>
+<div id="the-data-set" class="section level2">
+<h2>The data set</h2>
+<p>The data set need to provide information on</p>
+<ul>
+<li>The treatment indicator of the recruited units
+<code>Zobs</code></li>
+<li>The outcome of the recruited units <code>Yobs</code></li>
+<li>The covariate matrix of the recruited units <code>Xobs</code> where
+the first column is a column of 1s corresponding to intercepts. These
+covariates are assumed to satisfy the ignorability (or the
+non-differential recruitment) assumption.</li>
+<li>Indices of cluster membership for the recruited units
+<code>IDobs</code>. These indices should be integers starting at 1 and
+going to the maximum number of clusters.</li>
+<li>The probability of treatment in the cluster assignment
+<code>treat_prop</code>.</li>
+</ul>
+<p>A simulated data set is included in the R package. We can load
+it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(CRTrecruit)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&#39;dta&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># The data only for those who enrolled:</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>Zobs <span class="ot">&lt;-</span> dta<span class="sc">$</span>Zobs</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>Yobs <span class="ot">&lt;-</span> dta<span class="sc">$</span>Yobs</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>Xobs <span class="ot">&lt;-</span> dta<span class="sc">$</span>Xobs</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>IDobs <span class="ot">&lt;-</span> dta<span class="sc">$</span>IDobs</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>treat_prop <span class="ot">&lt;-</span> dta<span class="sc">$</span>treat_prop</span></code></pre></div>
+<p>and investigate the data structure</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dta<span class="sc">$</span>Zobs[<span class="dv">1</span><span class="sc">:</span><span class="dv">55</span>]  <span class="co"># The first 55 units</span></span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0
+## [39] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>dta<span class="sc">$</span>Yobs[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]  <span class="co"># The first 10 units</span></span></code></pre></div>
+<pre><code>##  [1] 0.186996 4.270205 1.561991 4.072359 1.767918 6.252805 4.531032 1.468970
+##  [9] 3.763320 4.630092</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">head</span>(dta<span class="sc">$</span>Xobs)</span></code></pre></div>
+<pre><code>##                 X1 X2          X3         X4 X5
+## [1,] 1  0.36594112  0  0.09725489 -0.1656856  1
+## [2,] 1  0.06528818  1  1.57137462 -0.1656856  1
+## [3,] 1  0.25733838  0 -0.87871270 -0.1656856  1
+## [4,] 1 -0.64901008  0  0.03916714 -0.1656856  1
+## [5,] 1  0.66413570  0 -0.37881680 -0.1656856  1
+## [6,] 1 -0.79708953  1  0.62253002 -0.1656856  1</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>dta<span class="sc">$</span>IDobs[<span class="dv">1</span><span class="sc">:</span><span class="dv">55</span>]  <span class="co"># The first 55 units</span></span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2
+## [39] 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3</code></pre>
+</div>
+<div id="the-working-propensity-score" class="section level2">
+<h2>The working propensity score</h2>
+<p>The estimation procedure relies on estimating the working propensity
+score. We provide code to estimate it using the parametric approach in
+the manuscript. Specifically:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>r <span class="ot">&lt;-</span> treat_prop <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> treat_prop)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># Estimating the propensity score:</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>est_wps_pars <span class="ot">&lt;-</span> <span class="fu">EstWPSpars</span>(<span class="at">Xobs =</span> Xobs, <span class="at">Zobs =</span> Zobs, <span class="at">IDobs =</span> IDobs,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>                           <span class="at">treat_prop =</span> treat_prop)</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co"># The estimated parameters of the working propensity score:</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>alphas <span class="ot">&lt;-</span> est_wps_pars<span class="sc">$</span>est_delta_coefs</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co"># Acquiring the estimates of the working propensity score.</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>est_delta <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(Xobs <span class="sc">%*%</span> alphas)  <span class="co"># The delta function</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>est_eind <span class="ot">&lt;-</span> r <span class="sc">*</span> est_delta <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> r <span class="sc">*</span> est_delta)  <span class="co"># The working PS.</span></span></code></pre></div>
+</div>
+<div id="estimating-the-causal-effects" class="section level2">
+<h2>Estimating the causal effects</h2>
+<ul>
+<li>Once the working propensity scores have been acquired, we can create
+the weights that are used for estimating the causal effects in the
+different populations.</li>
+<li>The weights are calculated as follows:</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># The weights for the always+defiers, always+compliers, and recruited.</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>weights <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">alw_def =</span> ((<span class="dv">1</span> <span class="sc">-</span> est_eind) <span class="sc">/</span> est_eind) <span class="sc">*</span> Zobs <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> Zobs),</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>                 <span class="at">alw_com =</span> Zobs <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> Zobs) <span class="sc">*</span> est_eind <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> est_eind),</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>                 <span class="at">recr =</span> Zobs <span class="sc">/</span> est_eind <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> Zobs) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> est_eind))</span></code></pre></div>
+<div id="effects-on-three-interpretable-supopulations" class="section level3">
+<h3>Effects on three interpretable supopulations</h3>
+<ul>
+<li>These weights are fed into the <code>SimultEstimateCRT</code>
+function for acquiring the causal effect estimates on the three
+subpopulation, the always- and defier-recruited, the always- and
+complier-recruited, and the recruited populations.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>simult_est <span class="ot">&lt;-</span> <span class="fu">SimultEstimateCRT</span>(<span class="at">Zobs =</span> Zobs, <span class="at">Yobs =</span> Yobs, <span class="at">weights =</span> weights,</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                                <span class="at">IDobs =</span> IDobs, <span class="at">Xobs =</span> Xobs,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                                <span class="at">est_wps_pars =</span> est_wps_pars,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>                                <span class="at">ps =</span> <span class="st">&#39;estimated&#39;</span>, <span class="at">treat_prop =</span> treat_prop)</span></code></pre></div>
+<ul>
+<li>The results include the estimates, asymptotic variance, and
+confidence intervals based on the asymptotic distribution.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># The estimates:</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>simult_est<span class="sc">$</span>estimate</span></code></pre></div>
+<pre><code>##  alw+def  alw+com     recr 
+## 2.742589 2.869440 2.825215</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># The asymptotic variance:</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>simult_est<span class="sc">$</span>asym_var_est</span></code></pre></div>
+<pre><code>##             alw+def     alw+com        recr
+## alw+def 0.008795245 0.007043695 0.007554217
+## alw+com 0.007043695 0.010389458 0.009382022
+## recr    0.007554217 0.009382022 0.008840990</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># The confidence intervals&#39; lower and upper bounds</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">lb =</span> simult_est<span class="sc">$</span>lb, <span class="at">ub =</span> simult_est<span class="sc">$</span>ub)</span></code></pre></div>
+<pre><code>##     alw+def alw+com     recr
+## lb 2.558774 2.66966 2.640923
+## ub 2.926403 3.06922 3.009507</code></pre>
+</div>
+<div id="effects-on-the-compliers" class="section level3">
+<h3>Effects on the compliers</h3>
+<ul>
+<li>It is common to assume monotonicity of the recruitment indicators,
+implying that recruitment status under treatment can only be equal or
+higher than recruitment status under control. This assumption rules out
+the presence of defiers. This means that the effect on the always- and
+defier-recruited population is simply the effect on the always-recruited
+population.</li>
+<li>This allows us to also estimate the effect on the complier
+population.</li>
+<li>To do so, we first need to estimate the proportion of compliers in
+the group of always- and complier-recruited units. We can do so as
+follows:</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>p_trt <span class="ot">&lt;-</span> <span class="fu">mean</span>(Zobs)  <span class="co"># Observed proportion of treatment in the recruited.</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>pi_trt <span class="ot">&lt;-</span> treat_prop  <span class="co"># The theoretical treatment proportion</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co"># The estimated proportion of compliers among always + compliers</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>est_prop_compl <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (pi_trt <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> pi_trt)) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">-</span> p_trt) <span class="sc">/</span> p_trt)</span></code></pre></div>
+<ul>
+<li>Then, we can use the <code>ComplierEffect</code> function to acquire
+the causal effect on the complier group.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>compl <span class="ot">&lt;-</span> <span class="fu">ComplierEffect</span>(<span class="at">prop_compl =</span> est_prop_compl,</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>                        <span class="at">effect_estimates =</span> simult_est<span class="sc">$</span>estimate[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>                        <span class="at">asym_var_est =</span> simult_est<span class="sc">$</span>asym_var_est[<span class="dv">1</span> <span class="sc">:</span> <span class="dv">2</span>, <span class="dv">1</span> <span class="sc">:</span> <span class="dv">2</span>])</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>compl</span></code></pre></div>
+<pre><code>##  estimate   asym_sd   asym_lb   asym_ub 
+## 3.0250324 0.1620678 2.7073795 3.3426852</code></pre>
+</div>
+</div>
+<div id="inference-using-the-bootstrap" class="section level2">
+<h2>Inference using the bootstrap</h2>
+<ul>
+<li>Bootstrap based confidence intervals can also be acquired.</li>
+<li>We resample clusters, either completely randomly by setting
+<code>fix_trt_num = FALSE</code> or by keeping the number of treated
+clusters fixed <code>fix_trt_num = TRUE</code> (default).</li>
+<li>If we assume that there are no defiers (<code>defiers=FALSE</code>)
+the bootstrap will also calculate bootstrap estimates for the effect on
+the compliers.</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fu">BootVar</span>(<span class="at">B =</span> <span class="dv">500</span>, <span class="at">Xobs =</span> Xobs, <span class="at">Zobs =</span> Zobs, <span class="at">Yobs =</span> Yobs, <span class="at">IDobs =</span> IDobs,</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>                 <span class="at">treat_prop =</span> treat_prop, <span class="at">fix_trt_num =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>                 <span class="at">prop_compl =</span> est_prop_compl, <span class="at">defiers =</span> <span class="cn">FALSE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;For estimated propensity score only.&quot;
+## [1] 100
+## [1] 200
+## [1] 300
+## [1] 400
+## [1] 500</code></pre>
+<ul>
+<li>We create confidence intervals using the standard deviation of the
+bootstrap samples and using the normal approximation.</li>
+<li>Quantiles could be considered alternatively.</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>boot_sd <span class="ot">&lt;-</span> <span class="fu">apply</span>(boots<span class="sc">$</span>est_boot, <span class="dv">2</span>, sd)[<span class="dv">1</span> <span class="sc">:</span> <span class="dv">4</span>]</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>boot_sd <span class="ot">&lt;-</span> boot_sd[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>)]  <span class="co"># Re-ordering.</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>effects <span class="ot">&lt;-</span> <span class="fu">c</span>(simult_est<span class="sc">$</span>estimate, <span class="at">compliers =</span> <span class="fu">as.numeric</span>(compl[<span class="dv">1</span>]))</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>effects</span></code></pre></div>
+<pre><code>##   alw+def   alw+com      recr compliers 
+##  2.742589  2.869440  2.825215  3.025032</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>boot_sd</span></code></pre></div>
+<pre><code>##   always+defiers always+compliers        recruited        compliers 
+##       0.07836292       0.06301550       0.06049262       0.07936225</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">lb =</span> effects <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> boot_sd, <span class="at">ub =</span> effects <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> boot_sd)</span></code></pre></div>
+<pre><code>##     alw+def  alw+com     recr compliers
+## lb 2.588997 2.745929 2.706650  2.869482
+## ub 2.896180 2.992950 2.943781  3.180582</code></pre>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
