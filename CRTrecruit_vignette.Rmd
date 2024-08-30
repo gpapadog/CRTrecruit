@@ -1,8 +1,7 @@
 ---
 title: "CRTrecruit"
 author: "Georgia Papadogeorgou"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: github_document
 vignette: >
   %\VignetteIndexEntry{CRTrecruit}
   %\VignetteEngine{knitr::rmarkdown}
@@ -147,7 +146,7 @@ compl
 - If we assume that there are no defiers (```defiers=FALSE```) the bootstrap will also calculate bootstrap estimates for the effect on the compliers.
 
 ```{r}
-boots <- BootVar(B = 500, Xobs = Xobs, Zobs = Zobs, Yobs = Yobs, IDobs = IDobs,
+boots <- BootVar(B = 10, Xobs = Xobs, Zobs = Zobs, Yobs = Yobs, IDobs = IDobs,
                  treat_prop = treat_prop, fix_trt_num = TRUE,
                  prop_compl = est_prop_compl, defiers = FALSE, verbose = TRUE)
 ```
