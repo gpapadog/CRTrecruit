@@ -42,7 +42,9 @@ data('dta')
 
 ```{r, include=FALSE}
 load('data/dta.Rdata')
+```
 
+```{r}
 # The data only for those who enrolled:
 Zobs <- dta$Zobs
 Yobs <- dta$Yobs
