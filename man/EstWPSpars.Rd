@@ -4,7 +4,7 @@
 \alias{EstWPSpars}
 \title{Working propensity score estimation.}
 \usage{
-EstWPSpars(Xobs, Zobs, IDobs, r, inference = TRUE)
+EstWPSpars(Xobs, Zobs, IDobs, treat_prop, inference = TRUE)
 }
 \arguments{
 \item{Xobs}{Matrix with covariates for the recruited individuals. Rows
@@ -17,9 +17,7 @@ first column is a column of 1s for the intercept of the model.}
 recruited individuals belong. IDobs should include integers from 1 up to
 the number of different clusters.}
 
-\item{r}{Numeric. Corresponds to the ratio of the treatment probability over
-1 - treatment probability, where treatment probability is the probability
-used to assign the cluster-level treatment.}
+\item{treat_prop}{Numeric. Proportion of clusters that are treated.}
 
 \item{inference}{Logical. Whether the function should calculate the estimate
 of the asymptotic variance for the working propensity score parameters.
