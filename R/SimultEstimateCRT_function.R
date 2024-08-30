@@ -60,7 +60,7 @@ SimultEstimateCRT <- function(Zobs, Yobs, weights, IDobs, Xobs = NULL,
   WT_mu1 <- theta1hat / theta3hat
   WT_mu0 <- theta2hat / theta4hat
   estimate <- WT_mu1 - WT_mu0
-  names(estimate) <- c('alw', 'alw+com', 'recr')
+  names(estimate) <- c('alw+def', 'alw+com', 'recr')
   
   theta_hat <- rbind(theta1hat, theta2hat, theta3hat, theta4hat)
   colnames(theta_hat) <- names(estimate)
