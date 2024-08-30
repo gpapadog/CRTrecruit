@@ -40,11 +40,9 @@ A simulated data set is included in the R package. We can load it using
 data('dta')
 ```
 
-```{r, include=FALSE}
-load('data/dta.Rdata')
-```
-
 ```{r}
+data('dta', package = 'CRTrecruit')
+
 # The data only for those who enrolled:
 Zobs <- dta$Zobs
 Yobs <- dta$Yobs
