@@ -1,16 +1,17 @@
 #' Estimation and inference of causal effects in cluster randomized trials
 #' 
 #' Estimating the causal effect on the subpopulation of the always-recruited
-#' and defiers, the always- and the complier-recruited, and the recruited.
+#' and disincentivized, the always- and the incentivized-recruited, and the
+#' recruited.
 #' 
 #' Builds on the NewEstimateCRT function that does estimation and inference for
-#' always+defiers and recruited only.
+#' always+disincentivized and recruited only.
 #' 
 #' @param Zobs Vector of treatments for the recruited individuals.
 #' @param Yobs Vector of outcomes for the recruited individuals.
 #' @param weights Matrix of weights for each individual used for estimation.
 #' Columns correspond to weights for the always-recruited, for the always+
-#' compliers, and for the recruited.
+#' incentivized-recruited, and for the recruited.
 #' @param IDobs Vector of the cluster indices for the recruited individuals.
 #' @param ps Whether the propensity score is known or estimated. Options are
 #' 'known' or 'estimated'. Defaults to 'known'.
@@ -41,8 +42,8 @@ SimultEstimateCRT <- function(Zobs, Yobs, weights, IDobs, Xobs = NULL,
   r <- treat_prop / (1 - treat_prop)
   
   if (ncol(weights) != 3) {
-    stop('weights should be of 3 columns corresponding to always+defiers,
-         always+compliers, and recruited.')
+    stop('weights should be of 3 columns corresponding to
+          always+disincentivized, always+incentivized, and recruited.')
   }
 
   # --------------- PART A ------------------- #
@@ -60,7 +61,7 @@ SimultEstimateCRT <- function(Zobs, Yobs, weights, IDobs, Xobs = NULL,
   WT_mu1 <- theta1hat / theta3hat
   WT_mu0 <- theta2hat / theta4hat
   estimate <- WT_mu1 - WT_mu0
-  names(estimate) <- c('alw+def', 'alw+com', 'recr')
+  names(estimate) <- c('alw+dis', 'alw+inc', 'recr')
   
   theta_hat <- rbind(theta1hat, theta2hat, theta3hat, theta4hat)
   colnames(theta_hat) <- names(estimate)
@@ -164,15 +165,15 @@ SimultEstimateCRT <- function(Zobs, Yobs, weights, IDobs, Xobs = NULL,
     # (a0) The derivative of w0 for always-recruited is zero.
     # Always-recruited for control units remains at 0 (rows 2 & 4)
     
-    # (b) For always + compliers:
+    # (b) For always + incentivized:
     
     # (b1) For the treated units the derivative is 0 - rows 5 & 7 remain at 0.
-    # (b0) The derivative of w0 for always + compliers:
+    # (b0) The derivative of w0 for always + incentivized:
     deriv_w0 <- r * sweep(t(Xobs), 2, FUN = '*', exp_Xt_alpha)
     Z_deriv_w0 <- sweep(deriv_w0, 2, FUN = '*', STATS = 1 - Zobs)
     ZY_deriv_w0 <- sweep(Z_deriv_w0, 2, FUN = '*', STATS = Yobs)
     
-    # Always + compliers for the control units:
+    # Always + incentivized for the control units:
     A_mat[c(6, 8), wps_par_indices] <- rbind(apply(ZY_deriv_w0, 1, sum),
                                              apply(Z_deriv_w0, 1, sum)) / J
     
@@ -184,8 +185,8 @@ SimultEstimateCRT <- function(Zobs, Yobs, weights, IDobs, Xobs = NULL,
     # Recruited for treated units - rows 9 & 11:
     A_mat[c(9, 11), wps_par_indices] <- A_mat[c(1, 3), wps_par_indices]
     
-    # (c0) The derivative of w0 is the same for recruited and always+compliers
-    #      so we use what we have for the always+compliers.
+    # (c0) The derivative of w0 is the same for recruited and always+
+    #      incentivized so we use what we have for the always+incentivized.
     
     # Recruited for control units - rows 10 & 12:
     A_mat[c(10, 12), wps_par_indices] <- A_mat[c(6, 8), wps_par_indices]

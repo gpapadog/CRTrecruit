@@ -1,29 +1,30 @@
-#' Estimation and inference on the complier subpopulation
+#' Estimation and inference on the incentivized subpopulation
 #' 
-#' Function that receives quantities on the always+complier population and the
-#' always population, and returns an estimate of the causal effect and a
-#' confidence interval for the complier population. It can only be used in the
-#' absence of defiers.
+#' Function that receives quantities on the always+incentivized population and
+#' the always population, and returns an estimate of the causal effect and a
+#' confidence interval for the incentivized population. It can only be used in
+#' the absence of disincentivized-recruited individuals.
 #' 
-#' @param prop_compl The proportion of compliers among the always-recruited and
-#' the complier recruited. Numeric.
+#' @param prop_incen The proportion of incentivized among the always-recruited
+#' and the incentivized-recruited. Numeric.
 #' @param effect_estimates The effect estimates for the always-recruited and
-#' the always+complier population. Vector of length 2.
+#' the always+incentivized-recruited population. Vector of length 2.
 #' @param asym_var_est 2 x 2 matrix for the asymptotic variance of the causal 
-#' estimators for the effect on the always and the always+complier populations.
-#' Defaults to NULL. If null, inference will not be performed, and only the
-#' estimate will be returned.
+#' estimators for the effect on the always and the always+incentivized
+#' populations. Defaults to NULL. If null, inference will not be performed, and
+#' only the estimate will be returned.
 #'    
 #' @export
 #' 
-ComplierEffect <- function(prop_compl, effect_estimates, asym_var_est = NULL) {
+ComplierEffect <- function(prop_incen, effect_estimates, asym_var_est = NULL) {
   
   r <- c(estimate = NA, asym_sd = NA, asym_lb = NA, asym_ub = NA)
   
-  # The weights corresponding to the always, and always+complier populations.
-  use_weights <- c(alw = - (1 - prop_compl), alw_com = 1) / prop_compl
+  # Weights corresponding to the always, and always+incentivized populations.
+  use_weights <- c(alw = - (1 - prop_incen), alw_inc = 1) / prop_incen
   
-  # Estimate: (combination of effect on always+compliers and effect on compliers)
+  # Estimate: (combination of effect on always+incentivized and effect on 
+  # incentivized)
   r[1] <- weighted.mean(x = effect_estimates, w = use_weights)
   
   if (is.null(asym_var_est)) {

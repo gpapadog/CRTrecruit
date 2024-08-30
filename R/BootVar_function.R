@@ -15,21 +15,23 @@
 #' @param fix_trt_num Logical. Whether we want to keep the number of treated
 #' clusters fixed in the bootstrap samples. This should agree with the
 #' treatment assignment mechanism. Defaults to TRUE.
-#' @param prop_compl The proportion of compliers. Bootstrap can be performed
-#' without re-estimating the proportion of compliers within each bootstrap
-#' sample. Then, set prop_compl to the estimated value. Defaults to NULL. If
-#' left NULL, this will not be calculated. We suggest re-estimating the
-#' proportion of compliers based on the bootstrap sample (leaving this to
-#' NULL). In simulations, we have found similar inferential performance whether
-#' this is re-estimated or not.
-#' @param defiers Logical. Whether we allow for defiers to exist. If defiers
-#' exist, we do not estimate effects on the compliers. Defaults to FALSE.
+#' @param prop_incen The proportion of incentivized-recruited. Bootstrap can be
+#' performed without re-estimating the proportion of incentivized-recruited
+#' within each bootstrap sample. Then, set prop_incen to the estimated value.
+#' Defaults to NULL. If left NULL, this will not be calculated. We suggest
+#' re-estimating the proportion of incentivized-recruited. based on the
+#' bootstrap sample (leaving this to NULL). In simulations, we have found
+#' similar inferential performance whether this is re-estimated or not.
+#' @param disincentivized Logical. Whether we allow for disincentivized-
+#' recruited to exist. If they exist, we do not estimate effects on the
+#' incentivized-recruited. Defaults to FALSE.
 #' @param verbose Logical. Whether to print bootstrap progression. Defaults to
 #' TRUE.
 #' 
 #' @export
 BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
-                    prop_compl = NULL, defiers = FALSE, verbose = TRUE) {
+                    prop_incen = NULL, disincentivized = FALSE,
+                    verbose = TRUE) {
   
   print('For estimated propensity score only.')
   
@@ -48,15 +50,17 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
   est_boot <- array(NA, dim = c(B, 5))
   dimnames(est_boot) <- list(
     boot = 1 : B,
-    population = c('always+defiers', 'recruited', 'always+compliers',
-                   'compliers', 'compliers_propfix'))
+    population = c('always+disincentivized', 'recruited',
+                   'always+incentivized', 'incentivized',
+                   'incentivized_propfix'))
   
   # Keeping track of the estimates of the wps across bootstraps.
   alpha_boot <- matrix(NA, nrow = B, ncol = num_alphas)
   
-  # Keeping track of the bootstrap estimated proportion of compliers.
-  if (!defiers) {
-    prop_compl_boot <- rep(NA, B)
+  # Keeping track of the bootstrap estimated proportion of incentivized-
+  # recruited.
+  if (!disincentivized) {
+    prop_incen_boot <- rep(NA, B)
   }
   
   
@@ -87,7 +91,7 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
     }
     
     
-    # --------- PART 3: Effect estimates except on compliers ----------- #
+    # ------ PART 3: Effect estimates except on incentivized-recruited ------ #
     
     
     # Re-estimating the propensity score:
@@ -102,8 +106,8 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
     boot_est_eind <- r * boot_est_delta / (1 + r * boot_est_delta)
     
     boot_weights <-
-      cbind(alw = ((1 - boot_est_eind) / boot_est_eind) * boot_Zobs + (1 - boot_Zobs),
-            alw_com = boot_Zobs + (1 - boot_Zobs) * boot_est_eind / (1 - boot_est_eind),
+      cbind(alw_dis = ((1 - boot_est_eind) / boot_est_eind) * boot_Zobs + (1 - boot_Zobs),
+            alw_inc = boot_Zobs + (1 - boot_Zobs) * boot_est_eind / (1 - boot_est_eind),
             recr = boot_Zobs / boot_est_eind + (1 - boot_Zobs) / (1 - boot_est_eind))
     
     boot_est <- SimultEstimateCRT(Zobs = boot_Zobs, Yobs = boot_Yobs,
@@ -115,21 +119,21 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
     
     
     
-    # --------- PART 4: Effect estimates on compliers ----------- #
+    # --------- PART 4: Effect estimates on incentivized-recruited ----------- #
     
-    if (!defiers) {
+    if (!disincentivized) {
       
       boot_pi_trt <- mean(Zc[chosen_clusters])  # Proportion of treated clusters.
       boot_p_trt <- mean(boot_Zobs)  # Proportion of treatment in the recruited.
-      boot_est_prop_compl <- 1 - ((boot_pi_trt / (1 - boot_pi_trt)) *
+      boot_est_prop_incen <- 1 - ((boot_pi_trt / (1 - boot_pi_trt)) *
                                     ((1 - boot_p_trt) / boot_p_trt))
-      prop_compl_boot[bb] <- boot_est_prop_compl
+      prop_incen_boot[bb] <- boot_est_prop_incen
       
-      est_boot[bb, 4] <- ComplierEffect(prop_compl = boot_est_prop_compl,
+      est_boot[bb, 4] <- ComplierEffect(prop_incen = boot_est_prop_incen,
                                         effect_estimates = est_boot[bb, 1 : 2])
       
-      if (!is.null(prop_compl)) {
-        est_boot[bb, 5] <- ComplierEffect(prop_compl = prop_compl,
+      if (!is.null(prop_incen)) {
+        est_boot[bb, 5] <- ComplierEffect(prop_incen = prop_incen,
                                           effect_estimates = est_boot[bb, 1 : 2])
       }
     }
@@ -138,20 +142,22 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
   
   # --------- PART 5: Organizing results ----------- #
   
-  # If we have defiers, then we do not have the results on compliers.
-  if (defiers) {
+  # If we have disincentivized-recruited, then we do not have the results on
+  # incentivized-recruited.
+  if (disincentivized) {
     est_boot <- est_boot[, 1 : 3]
     return(list(alpha_boot = alpha_boot, est_boot = est_boot))
   }
   
-  if (!defiers) {
+  if (!disincentivized) {
     
-    # If we do not have defiers, we might not fix the proportion of compliers.
-    if (is.null(prop_compl)) {
+    # If we do not have disincentivized-recruited, we might not fix the
+    # proportion of incentivized-recruited.
+    if (is.null(prop_incen)) {
       est_boot <- est_boot[, 1 : 4]
     }
     
-    return(list(alpha_boot = alpha_boot, prop_compl_boot = prop_compl_boot,
+    return(list(alpha_boot = alpha_boot, prop_incen_boot = prop_incen_boot,
                 est_boot = est_boot))
   }
   
