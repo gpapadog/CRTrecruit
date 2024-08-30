@@ -36,12 +36,11 @@ The data set need to provide information on
 
 A simulated data set is included in the R package. We can load it using
 
-```
-data('dta')
-```
+
 
 ```{r}
-data('dta', package = 'CRTrecruit')
+library(CRTrecruit)
+data('dta')
 
 # The data only for those who enrolled:
 Zobs <- dta$Zobs
