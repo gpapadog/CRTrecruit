@@ -31,6 +31,7 @@
 BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
                     prop_compl = NULL, defiers = FALSE, verbose = TRUE) {
   
+  print('For estimated propensity score only.')
   
   num_alphas <- ncol(Xobs)  # Number of covariates + intercept
   J <- max(IDobs)  # Number of clusters
@@ -151,7 +152,7 @@ BootVar <- function(B, Xobs, Zobs, Yobs, IDobs, treat_prop, fix_trt_num = TRUE,
     }
     
     return(list(alpha_boot = alpha_boot, prop_compl_boot = prop_compl_boot,
-                est_boot = est_boot, ))
+                est_boot = est_boot))
   }
   
 }
