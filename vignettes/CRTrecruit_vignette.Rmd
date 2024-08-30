@@ -34,11 +34,14 @@ The data set need to provide information on
 - Indices of cluster membership for the recruited units ```IDobs```. These indices should be integers starting at 1 and going to the maximum number of clusters.
 - The probability of treatment in the cluster assignment ```treat_prop```.
 
-A simulated data set is included in the R package. We can load it:
+A simulated data set is included in the R package. We can load it using
 
-```{r}
-library(CRTrecruit)
+```
 data('dta')
+```
+
+```{r, include=FALSE}
+load('data/dta.Rdata')
 
 # The data only for those who enrolled:
 Zobs <- dta$Zobs
